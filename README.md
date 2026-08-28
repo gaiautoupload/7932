@@ -4,9 +4,7 @@
 
 ## 發布
 
-1. 把此資料夾內容放到一個 GitHub repository 的根目錄。
-2. 在 repository 的 **Settings → Pages → Source** 選擇 **GitHub Actions**。
-3. 推送到 `main`，內附的 workflow 會自動發布。
+本站使用 repository 既有的 GitHub Pages「從分支發布」設定。推送到 `main` 後，GitHub 會直接發布根目錄的靜態檔案。
 
 ## 每日更新
 
