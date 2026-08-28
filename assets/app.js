@@ -2,7 +2,7 @@ const state = { snapshot: null, side: "buy", expanded: null };
 const $ = (selector) => document.querySelector(selector);
 const all = (selector) => [...document.querySelectorAll(selector)];
 const dateLabel = (value = "") => value.length === 8 ? `${value.slice(0,4)}.${value.slice(4,6)}.${value.slice(6)}` : value;
-const price = (value = 0) => Number(value).toLocaleString("zh-TW", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const price = (value) => value === null || value === undefined ? "—" : Number(value).toLocaleString("zh-TW", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const lots = (value = 0) => `${Math.abs(Number(value)).toLocaleString("zh-TW", { maximumFractionDigits: 1 })} 張`;
 const signedClass = (value) => Number(value) >= 0 ? "up" : "down";
 
@@ -41,18 +41,17 @@ function renderImpact() {
 function render(data) {
   state.snapshot = data;
   const market = data.market || {};
-  const isSeed = data.data_mode !== "live";
   const visibleNet = [...data.top_buyers, ...data.top_sellers].reduce((sum, item) => sum + Number(item.net_lots), 0);
   $("#stock-name").textContent = data.stock_name;
   $("#stock-id").textContent = data.stock_id;
   $("#close").textContent = price(market.close);
-  $("#change").textContent = `▲ ${price(market.change)} · ${price(market.change_pct)}%`;
-  $("#timestamp").textContent = `資料日 ${dateLabel(data.as_of)} · ${isSeed ? "買方資料取自提供畫面" : "收市資料已驗證"}`;
-  $("#data-status").textContent = isSeed ? "畫面快照" : "每日更新";
-  $("#notice").hidden = !isSeed;
+  const hasChange = market.change !== null && market.change !== undefined;
+  $("#change").textContent = hasChange ? `${Number(market.change) >= 0 ? "▲" : "▼"} ${price(Math.abs(market.change))} · ${price(Math.abs(market.change_pct))}%` : "前日參考價未提供";
+  $("#timestamp").textContent = `資料日 ${dateLabel(data.as_of)} · EMdss004 / EMdes010 已驗證`;
+  $("#data-status").textContent = "每日更新";
   $("#signal-score").textContent = data.signal.score;
   $("#signal-label").textContent = data.signal.label;
-  $("#signal-copy").textContent = isSeed ? "累積足夠歷史後，才會啟用影響分點訊號。" : "高影響分點與市場方向的綜合判讀。";
+  $("#signal-copy").textContent = data.impact_ranking.length ? "高影響分點與市場方向的綜合判讀。" : "累積足夠交易日後，才會啟用影響分點訊號。";
   $("#gauge").style.setProperty("--score", `${data.signal.score * 3.6}deg`);
   $("#visible-net").textContent = `${visibleNet > 0 ? "+" : ""}${visibleNet.toLocaleString()} 張`;
   $("#visible-net").className = signedClass(visibleNet);
