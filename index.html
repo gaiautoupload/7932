@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071018">
+  <meta name="description" content="7932 昱鑽應材主力分點、成本、張數與股價影響力手機戰情室">
+  <title>7932 主力雷達｜昱鑽應材</title>
+  <link rel="stylesheet" href="./assets/app.css">
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="brand"><span>7932</span><b>主力雷達</b></div>
+      <div class="live"><i></i><span id="data-status">載入中</span></div>
+    </header>
+
+    <section class="quote" id="overview">
+      <div class="quote-top">
+        <div><p>興櫃 · 半導體材料</p><h1 id="stock-name">昱鑽應材</h1><span id="stock-id">7932</span></div>
+        <div class="price"><strong id="close">—</strong><span id="change">—</span></div>
+      </div>
+      <div class="timestamp" id="timestamp">讀取每日快照…</div>
+      <div class="pulse">
+        <div class="gauge" id="gauge"><span id="signal-score">—</span></div>
+        <div><small>策略溫度</small><h2 id="signal-label">資料載入中</h2><p id="signal-copy">正在核對行情與分點資料。</p></div>
+      </div>
+    </section>
+
+    <aside class="notice" id="notice" hidden><b>初始快照</b><span>目前資料取自提供畫面；執行每日追蹤器後會自動補齊買賣各前 10 名與歷史影響力。</span></aside>
+
+    <section class="metrics">
+      <article><span>前十大淨額</span><strong id="visible-net">—</strong><small>已載入分點合計</small></article>
+      <article><span>成交量</span><strong id="volume">—</strong><small>當日市場</small></article>
+      <article><span>籌碼集中</span><strong id="concentration">—</strong><small id="concentration-pct">—</small></article>
+    </section>
+
+    <section class="section" id="brokers">
+      <div class="section-head"><div><p>DAILY FLOW</p><h2>當日主力前 10</h2></div><span>點擊分點查看庫存</span></div>
+      <div class="segmented">
+        <button class="active-buy" data-side="buy">買超 <b id="buy-count">0</b></button>
+        <button data-side="sell">賣超 <b id="sell-count">0</b></button>
+      </div>
+      <div class="broker-list" id="broker-list"></div>
+    </section>
+
+    <section class="section" id="impact">
+      <div class="section-head"><div><p>PRICE IMPACT</p><h2>誰最能帶動股價？</h2></div><span>60 日滾動</span></div>
+      <div id="impact-list"></div>
+    </section>
+
+    <section class="section" id="strategy">
+      <div class="section-head"><div><p>PLAYBOOK</p><h2>跟隨策略</h2></div><span>只做確認，不猜主力</span></div>
+      <div class="rules">
+        <article><i>1</i><div><b>觀察</b><p>任一合格高影響分點連 2 日淨買超，先列入觀察，不進場。</p></div></article>
+        <article><i>2</i><div><b>確認</b><p>前 5 高影響分點至少 3 家同步買超，且收盤站上群體估算成本，訊號轉多。</p></div></article>
+        <article><i>3</i><div><b>持有</b><p>群體庫存維持高峰 70% 以上視為調節；不因單日賣超出場。</p></div></article>
+        <article><i>4</i><div><b>降溫</b><p>持有滿 5 日後，群體庫存跌破高峰 30% 且同步賣超，策略退出。</p></div></article>
+      </div>
+      <p class="disclaimer" id="method-note"></p>
+    </section>
+
+    <nav class="bottom-nav" aria-label="戰情室導覽">
+      <a href="#overview"><i>◉</i><span>總覽</span></a><a href="#brokers"><i>↕</i><span>主力</span></a><a href="#impact"><i>⌁</i><span>影響力</span></a><a href="#strategy"><i>✓</i><span>策略</span></a>
+    </nav>
+  </main>
+  <script src="./assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "stock_id": "7932",
+  "stock_name": "昱鑽應材",
+  "as_of": "20260828",
+  "generated_at": "2026-08-28T18:50:00+08:00",
+  "data_mode": "seed_from_screenshot",
+  "market": {"date":"20260828","close":395,"change":127,"change_pct":47.39,"volume_lots":4683,"concentration_lots":-124,"concentration_pct":-2.64,"turnover_pct":9},
+  "signal": {"code":"watch","label":"主力方向仍待確認","score":50,"leader_net_lots":0},
+  "top_buyers": [
+    {"broker_id":"9A00","broker_name":"永豐金-經紀部","buy_lots":605,"sell_lots":0,"net_lots":605,"avg_price":380.88,"inventory_lots":605,"inventory_cost":380.88,"impact_score":0,"samples":0,"qualified":false},
+    {"broker_id":"1260","broker_name":"宏遠","buy_lots":519,"sell_lots":0,"net_lots":519,"avg_price":380.75,"inventory_lots":519,"inventory_cost":380.75,"impact_score":0,"samples":0,"qualified":false},
+    {"broker_id":"9A9R","broker_name":"永豐金-信義","buy_lots":130,"sell_lots":0,"net_lots":130,"avg_price":398.55,"inventory_lots":130,"inventory_cost":398.55,"impact_score":0,"samples":0,"qualified":false},
+    {"broker_id":"779Z","broker_name":"國票-安和","buy_lots":107,"sell_lots":0,"net_lots":107,"avg_price":386.95,"inventory_lots":107,"inventory_cost":386.95,"impact_score":0,"samples":0,"qualified":false},
+    {"broker_id":"8152","broker_name":"台新-新莊","buy_lots":95,"sell_lots":0,"net_lots":95,"avg_price":392.3,"inventory_lots":95,"inventory_cost":392.3,"impact_score":0,"samples":0,"qualified":false},
+    {"broker_id":"989V","broker_name":"元大-北三重","buy_lots":71,"sell_lots":0,"net_lots":71,"avg_price":384.29,"inventory_lots":71,"inventory_cost":384.29,"impact_score":0,"samples":0,"qualified":false},
+    {"broker_id":"980L","broker_name":"元大-長榮","buy_lots":67,"sell_lots":0,"net_lots":67,"avg_price":403.13,"inventory_lots":67,"inventory_cost":403.13,"impact_score":0,"samples":0,"qualified":false},
+    {"broker_id":"9A9U","broker_name":"永豐金-中正","buy_lots":42,"sell_lots":0,"net_lots":42,"avg_price":414.56,"inventory_lots":42,"inventory_cost":414.56,"impact_score":0,"samples":0,"qualified":false},
+    {"broker_id":"9872","broker_name":"元大-復北","buy_lots":38,"sell_lots":0,"net_lots":38,"avg_price":394.45,"inventory_lots":38,"inventory_cost":394.45,"impact_score":0,"samples":0,"qualified":false}
+  ],
+  "top_sellers": [],
+  "impact_ranking": [],
+  "history": [{"date":"20260828","close":395,"top10_net_lots":1674,"leader_net_lots":0}],
+  "method_note": "分點為行為節點；庫存與成本為可得期間內的移動加權估算，不代表特定自然人持股。影響力為歷史關聯，並非因果。"
+}
