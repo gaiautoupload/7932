@@ -34,7 +34,13 @@
     </section>
 
     <section class="section" id="brokers">
-      <div class="section-head"><div><p>DAILY FLOW</p><h2>當日主力前 10</h2></div><span>點擊分點查看庫存</span></div>
+      <div class="section-head"><div><p>CORE BROKER FLOW</p><h2>疑似核心主力 20</h2></div><span id="period-meta">歷史行為評分</span></div>
+      <div class="period-tabs" aria-label="買賣超期間">
+        <button class="active" data-period="1">當日</button>
+        <button data-period="5">近 5 日</button>
+        <button data-period="10">近 10 日</button>
+        <button data-period="20">近 20 日</button>
+      </div>
       <div class="segmented">
         <button class="active-buy" data-side="buy">買超 <b id="buy-count">0</b></button>
         <button data-side="sell">賣超 <b id="sell-count">0</b></button>
