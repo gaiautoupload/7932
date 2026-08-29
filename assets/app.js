@@ -32,7 +32,11 @@ function brokerCard(broker, index, maxLots) {
 function renderBrokers() {
   const windowData = currentWindow();
   const allCore = windowData.brokers || [];
-  const brokers = allCore.filter((broker) => state.side === "buy" ? Number(broker.net_lots) > 0 : Number(broker.net_lots) < 0);
+  const brokers = allCore
+    .filter((broker) => state.side === "buy" ? Number(broker.net_lots) > 0 : Number(broker.net_lots) < 0)
+    .sort((left, right) => state.side === "buy"
+      ? Number(right.net_lots) - Number(left.net_lots)
+      : Number(left.net_lots) - Number(right.net_lots));
   const maxLots = Math.max(...brokers.map((item) => Math.abs(item.net_lots)), 1);
   $("#period-meta").textContent = windowData.actual_days < windowData.requested_days
     ? `目前僅 ${windowData.actual_days} 個交易日資料`
@@ -40,7 +44,7 @@ function renderBrokers() {
   $("#buy-count").textContent = allCore.filter((item) => Number(item.net_lots) > 0).length;
   $("#sell-count").textContent = allCore.filter((item) => Number(item.net_lots) < 0).length;
   $("#broker-list").innerHTML = brokers.length
-    ? brokers.map((broker) => brokerCard(broker, allCore.indexOf(broker), maxLots)).join("")
+    ? brokers.map((broker, index) => brokerCard(broker, index, maxLots)).join("")
     : `<div class="empty"><b>這段期間沒有核心主力${state.side === "sell" ? "賣超" : "買超"}</b><p>名單由歷史行為評分選出，不會用當日排行榜替代。</p></div>`;
   all(".broker-card").forEach((button) => button.addEventListener("click", () => {
     state.expanded = state.expanded === button.dataset.broker ? null : button.dataset.broker;
