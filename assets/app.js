@@ -18,23 +18,31 @@ function brokerCard(broker, index, maxLots) {
   const open = state.expanded === broker.broker_id;
   const confidence = { high: "高", medium: "中", low: "低" }[broker.confidence] || "低";
   const isCore = state.period === "core";
-  const periodPrefix = isCore ? "累積" : "";
   const change = Number(broker.rank_change || 0);
   const rankBadge = !isCore ? "" : broker.rank_status === "new"
     ? `<span class="rank-move new">新進核心</span>`
     : change > 0 ? `<span class="rank-move up-rank">↑ ${change}</span>`
     : change < 0 ? `<span class="rank-move down-rank">↓ ${Math.abs(change)}</span>`
     : `<span class="rank-move same">持平</span>`;
-  const dailyDirection = Number(broker.daily_net_amount) >= 0 ? "up" : "down";
+  const statusIcon = { adding: "🟢", holding: "🟢", trimming: "🟡", reducing: "🟠", distribution: "🔴" }[broker.status_code] || "⚪";
+  const winRate = broker.win_rate_qualified ? `${price(broker.win_rate)}%` : "建模中";
+  const coreBody = `<div class="core-grid">
+    <span><small>今日</small><b class="${signedClass(broker.daily_net_lots)}">${Number(broker.daily_net_lots) >= 0 ? "+" : "−"}${lots(broker.daily_net_lots)}</b></span>
+    <span><small>累積庫存</small><b>${lots(broker.inventory_lots)}</b></span>
+    <span><small>推估成本</small><b>${price(broker.inventory_cost)}</b></span>
+    <span><small>勝率</small><b>${winRate}</b></span>
+    <span><small>狀態</small><b class="status ${broker.status_code}">${statusIcon} ${broker.status_label}</b></span>
+  </div>
+  <div class="capital-line"><span>累積淨投入</span><b>${money(broker.cumulative_net_amount)}</b><small>${broker.unrealized_pct == null ? "成本樣本不足" : `現價較成本 ${Number(broker.unrealized_pct) >= 0 ? "+" : ""}${price(broker.unrealized_pct)}%`}</small></div>`;
+  const flowBody = `<div class="broker-title"><b>${broker.broker_name}</b><small>${broker.broker_id}</small><strong class="${isBuy ? "up" : "down"}">${isBuy ? "+" : "−"}${lots(broker.net_lots)}</strong></div>
+    <div class="net-amount ${isBuy ? "up" : "down"}">${isBuy ? "+" : "−"}${money(broker.net_amount)}</div>
+    <div class="bar"><i style="width:${Math.abs(broker.net_lots) / maxLots * 100}%"></i></div>
+    <div class="row-meta"><span>買進 <b>${lots(broker.buy_lots)}</b> · ${money(broker.buy_amount)}</span><span>賣出 <b>${lots(broker.sell_lots)}</b> · ${money(broker.sell_amount)}</span></div>`;
   return `<button class="broker-card ${open ? "expanded" : ""}" data-broker="${broker.broker_id}">
     <span class="rank">${String(index + 1).padStart(2, "0")}</span>
     <div class="broker-main">
-      <div class="broker-title"><b>${broker.broker_name}${rankBadge}</b><small>${broker.broker_id}</small><strong class="${isBuy ? "up" : "down"}">${isBuy ? "+" : "−"}${lots(broker.net_lots)}</strong></div>
-      <div class="net-amount ${isBuy ? "up" : "down"}">${isBuy ? "+" : "−"}${money(broker.net_amount)}</div>
-      ${isCore ? `<div class="core-delta ${dailyDirection}"><span>今日增減</span><b>${Number(broker.daily_net_lots) >= 0 ? "+" : "−"}${lots(broker.daily_net_lots)}</b><strong>${Number(broker.daily_net_amount) >= 0 ? "+" : "−"}${money(broker.daily_net_amount)}</strong></div>` : ""}
-      <div class="bar"><i style="width:${Math.abs(broker.net_lots) / maxLots * 100}%"></i></div>
-      <div class="row-meta"><span>${periodPrefix}買進 <b>${lots(broker.buy_lots)}</b> · ${money(broker.buy_amount)}</span><span>${periodPrefix}賣出 <b>${lots(broker.sell_lots)}</b> · ${money(broker.sell_amount)}</span></div>
-      ${open ? `<div class="detail"><span><small>總資金占比</small><b>${price(broker.capital_share_pct)}%</b></span><span><small>證據可信度</small><b>${confidence}</b></span><span><small>歷史活躍</small><b>${broker.active_sessions}/${broker.history_sessions} 日</b></span><span><small>成交均價</small><b>${price(broker.avg_price)}</b></span><span><small>估算庫存</small><b>${Number(broker.inventory_lots || 0).toLocaleString()} 張</b></span><span><small>股價影響</small><b>${broker.qualified ? broker.impact_score : "樣本不足"}</b></span></div>` : ""}
+      ${isCore ? `<div class="broker-title core-title"><b>${broker.broker_name}${rankBadge}</b><small>${broker.broker_id}</small></div>${coreBody}` : flowBody}
+      ${open ? `<div class="detail"><span><small>推估成本區間</small><b>${price(broker.inventory_cost_low)}–${price(broker.inventory_cost_high)}</b></span><span><small>成本價位明細</small><b>${broker.cost_detail_records || 0} 筆</b></span><span><small>總資金占比</small><b>${price(broker.capital_share_pct)}%</b></span><span><small>證據可信度</small><b>${confidence}</b></span><span><small>歷史活躍</small><b>${broker.active_sessions}/${broker.history_sessions} 日</b></span><span><small>連續賣超</small><b>${broker.sell_streak || 0} 日</b></span><span><small>庫存留存率</small><b>${price(Number(broker.inventory_retention || 0) * 100)}%</b></span><span><small>股價影響樣本</small><b>${broker.samples || 0} 日</b></span></div>` : ""}
     </div>
   </button>`;
 }
