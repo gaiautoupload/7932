@@ -1,4 +1,4 @@
-const state = { snapshot: null, side: "buy", period: "core", expanded: null };
+const state = { snapshot: null, catalyst: null, side: "buy", period: "core", expanded: null };
 const $ = (selector) => document.querySelector(selector);
 const all = (selector) => [...document.querySelectorAll(selector)];
 const dateLabel = (value = "") => value.length === 8 ? `${value.slice(0,4)}.${value.slice(4,6)}.${value.slice(6)}` : value;
@@ -11,6 +11,7 @@ const money = (value = 0) => {
   return `NT$ ${amount.toLocaleString("zh-TW", { maximumFractionDigits: 0 })}`;
 };
 const signedClass = (value) => Number(value) >= 0 ? "up" : "down";
+const signedPct = (value) => value === null || value === undefined ? "—" : `${Number(value) > 0 ? "+" : ""}${Number(value).toLocaleString("zh-TW", { maximumFractionDigits: 2 })}%`;
 const currentWindow = () => state.snapshot.flow_windows?.[state.period] || { brokers: [] };
 
 function brokerCard(broker, index, maxLots) {
@@ -84,9 +85,12 @@ function render(data) {
   const market = data.market || {};
   $("#stock-name").textContent = data.stock_name;
   $("#stock-id").textContent = data.stock_id;
-  $("#close").textContent = price(market.close);
-  const hasChange = market.change !== null && market.change !== undefined;
-  $("#change").textContent = hasChange ? `${Number(market.change) >= 0 ? "▲" : "▼"} ${price(Math.abs(market.change))} · ${price(Math.abs(market.change_pct))}%` : "前日參考價未提供";
+  const marketPrice = market.weighted_avg_price ?? market.vwap;
+  const marketChange = market.weighted_avg_change;
+  const marketChangePct = market.weighted_avg_change_pct;
+  $("#close").textContent = price(marketPrice);
+  const hasChange = marketChange !== null && marketChange !== undefined;
+  $("#change").textContent = hasChange ? `${Number(marketChange) >= 0 ? "▲" : "▼"} ${price(Math.abs(marketChange))} · ${price(Math.abs(marketChangePct))}%` : "興櫃加權均價";
   $("#timestamp").textContent = `資料日 ${dateLabel(data.as_of)} · TPEx 每日分點資料已驗證`;
   $("#data-status").textContent = "每日更新";
   $("#signal-score").textContent = data.signal.score;
@@ -101,6 +105,68 @@ function render(data) {
   renderBrokers();
   renderImpact();
   updateVisibleNet();
+}
+
+const catalystText = {
+  READY_TO_IGNITE: ["🔥 點火", "內部主力與外部產業同步轉強，屬於完整共振。"],
+  CONTROLLED_MOVE: ["⚠️ 孤立拉抬", "主力偏強但產業催化不足，需提防單點控盤。"],
+  POSSIBLE_CATCH_UP: ["👀 等待補漲", "產業先行轉強，7932 主力籌碼尚未確認。"],
+  RISK_OFF: ["🔴 轉弱", "主力與外部產業同步偏弱，風險優先。"],
+  BULLISH: ["🟢 偏多", "至少一側轉強，但尚未達到完整點火門檻。"],
+  NEUTRAL: ["🟡 中性", "內外訊號尚未形成一致方向。"],
+  UNAVAILABLE: ["⚪ 資料不足", "關鍵來源缺漏，本日不產生點火判讀。"],
+};
+const componentMeta = {
+  emc_2383: ["台光電 2383", "Direct Signal", "35%"],
+  m8m9_proxy: ["M8 / M9", "Proxy Index", "30%"],
+  ppo_mppo: ["PPO / MPPO", "Proxy + Event", "20%"],
+  glass_proxy: ["富喬 / 台玻", "Low-Dk Sentiment", "15%"],
+};
+const alertText = {
+  BROAD_UP: "CCL 3 家以上同步上漲",
+  FULL_RESONANCE: "CCL 4 家全面共振",
+  CCL_FULL_RESONANCE: "CCL 4 家全面共振",
+  STRONG_CCL: "CCL Proxy 強勢",
+  WEAK_CCL: "CCL Proxy 轉弱",
+  PPO_PRICE_HIKE: "PPO / MPPO 漲價事件",
+  POSSIBLE_CATCH_UP: "潛在補漲",
+  POSITIVE_DIVERGENCE: "產業強、7932 尚未反映",
+  ISOLATED_MOVE: "缺乏產業共振，偏籌碼行情",
+};
+
+function renderCatalyst(data) {
+  state.catalyst = data;
+  const signals = data.signals || {};
+  const [title, copy] = catalystText[data.signal] || catalystText.UNAVAILABLE;
+  const ignition = signals.ignition;
+  $("#catalyst-date").textContent = `資料日 ${dateLabel((data.date || "").replaceAll("-", ""))}`;
+  $("#ignition-score").textContent = ignition ?? "—";
+  $("#main-force-score").textContent = signals.main_force ?? "—";
+  $("#external-score").textContent = signals.external_catalyst ?? "—";
+  $("#combined-score").textContent = ignition ?? "—";
+  $("#catalyst-signal").textContent = data.signal_label || title;
+  $("#catalyst-signal").dataset.signal = data.signal || "UNAVAILABLE";
+  $("#catalyst-title").textContent = title;
+  $("#catalyst-copy").textContent = copy;
+  const components = data.components || {};
+  $("#catalyst-list").innerHTML = Object.entries(componentMeta).map(([key, meta]) => {
+    const item = components[key] || {};
+    const change = item.change_pct ?? item.proxy_change_pct;
+    const status = item.status || "missing";
+    const freshness = item.freshness ? dateLabel(String(item.freshness).replaceAll("-", "")) : "無資料日";
+    return `<article class="catalyst-row ${status}">
+      <div><b>${meta[0]}</b><small>${meta[1]} · 權重 ${meta[2]}</small></div>
+      <span class="freshness ${status}">${status === "fresh" ? "新鮮" : status === "partial" ? "部分" : status === "stale" ? "延遲" : "缺漏"}<small>${freshness}</small></span>
+      <strong class="${signedClass(change)}">${signedPct(change)}</strong>
+      <em>${item.score ?? "—"}</em>
+    </article>`;
+  }).join("");
+  const alerts = data.alerts || [];
+  $("#catalyst-alerts").classList.toggle("hidden", !alerts.length);
+  $("#catalyst-alerts").innerHTML = alerts.map((alert) => `<span>${alertText[alert] || alert.replaceAll("_", " ")}</span>`).join("");
+  const quality = data.quality || {};
+  $("#catalyst-quality").textContent = quality.status === "ok" ? `8 / 8 行情已載入` : `${quality.stock_count || 0} / ${quality.expected_stock_count || 8} 行情已載入`;
+  $("#catalyst-source").textContent = "TWSE / TPEx / SSE + 跨市場行情備援";
 }
 
 function updateVisibleNet() {
@@ -126,11 +192,15 @@ all("[data-period]").forEach((button) => button.addEventListener("click", () => 
   renderBrokers(); updateVisibleNet();
 }));
 
-fetch("./data/snapshot.json", { cache: "no-store" })
-  .then((response) => { if (!response.ok) throw new Error("snapshot unavailable"); return response.json(); })
-  .then(render)
+Promise.all([
+  fetch("./data/snapshot.json", { cache: "no-store" }).then((response) => { if (!response.ok) throw new Error("snapshot unavailable"); return response.json(); }),
+  fetch("./data/current.json", { cache: "no-store" }).then((response) => { if (!response.ok) throw new Error("catalyst unavailable"); return response.json(); }),
+])
+  .then(([snapshot, catalyst]) => { render(snapshot); renderCatalyst(catalyst); })
   .catch(() => {
     $("#data-status").textContent = "資料錯誤";
     $("#signal-label").textContent = "無法讀取每日快照";
     $("#signal-copy").textContent = "請確認 data/snapshot.json 已提交至網站。";
+    $("#catalyst-signal").textContent = "資料讀取失敗";
+    $("#catalyst-copy").textContent = "請先執行本地每日更新 BAT，再確認 JSON 已提交。";
   });

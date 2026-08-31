@@ -1,0 +1,8 @@
+{
+  "external_weights": {"emc_2383": 0.35, "m8m9_proxy": 0.30, "ppo_mppo": 0.20, "glass_proxy": 0.15},
+  "ignition_weights": {"main_force": 0.55, "external_catalyst": 0.45},
+  "individual_weights": {"daily_momentum": 0.60, "five_day_trend": 0.25, "volume": 0.15},
+  "minimum_volatility_sessions": 10,
+  "strong_threshold": 65,
+  "weak_threshold": 45
+}

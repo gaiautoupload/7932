@@ -1,0 +1,10 @@
+{
+  "m8m9_proxy": {
+    "label": "M8/M9 Proxy Index",
+    "weights": {"taiwan_union_6274": 0.35, "iteq_6213": 0.25, "shengyi_600183": 0.25, "doosan_000150": 0.15}
+  },
+  "glass_proxy": {
+    "label": "玻纖 / Low-Dk Material Sentiment",
+    "weights": {"fulltech_1815": 0.5, "taiwan_glass_1802": 0.5}
+  }
+}
