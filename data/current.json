@@ -1,20 +1,20 @@
 {
   "date": "2026-08-31",
-  "updated_at": "2026-08-31T17:18:49+08:00",
+  "updated_at": "2026-08-31T18:16:24+08:00",
   "7932": {
-    "weighted_avg_price": 384.88,
-    "change_pct": null,
+    "weighted_avg_price": 386.15,
+    "change_pct": 0.32997297859072483,
     "source": "TPEx EMdes010",
-    "status": "stale",
-    "freshness": "20260828",
-    "core_inventory_lots": 1907.19,
-    "core_inventory_change_pct": null,
+    "status": "fresh",
+    "freshness": "20260831",
+    "core_inventory_lots": 1970.78,
+    "core_inventory_change_pct": 3.33,
     "inventory_not_declining": true
   },
   "signals": {
-    "main_force": 10.0,
-    "external_catalyst": 53.1,
-    "ignition": 29.4
+    "main_force": 20.0,
+    "external_catalyst": 53.2,
+    "ignition": 34.9
   },
   "components": {
     "emc_2383": {
@@ -37,7 +37,7 @@
       "score": 49.4,
       "source": "Yahoo Finance fallback",
       "source_url": "https://finance.yahoo.com/quote/2383.TW",
-      "timestamp": "2026-08-31T17:18:39+08:00",
+      "timestamp": "2026-08-31T18:15:38+08:00",
       "freshness": "2026-08-31",
       "status": "fresh",
       "official_validated": false
@@ -47,7 +47,7 @@
       "change_pct": -1.119,
       "return_5d_pct": 10.738,
       "trend_20d_pct": 42.352,
-      "score": 52.2,
+      "score": 52.6,
       "up_count": 2,
       "total_count": 4,
       "all_up": false,
@@ -57,7 +57,7 @@
       "status": "fresh",
       "source": "weighted proxy basket",
       "source_url": "config/proxy_baskets.json",
-      "timestamp": "2026-08-31T17:18:40+08:00",
+      "timestamp": "2026-08-31T18:15:39+08:00",
       "freshness": "2026-08-31",
       "constituents": [
         {
@@ -85,7 +85,7 @@
           "key": "doosan_000150",
           "weight": 0.15,
           "change_pct": 2.019,
-          "score": 59.3,
+          "score": 61.6,
           "status": "fresh"
         }
       ]
@@ -102,7 +102,7 @@
       "confidence": "HIGH",
       "source": "聖泉集團行情 + SSE 官方公告",
       "source_url": "https://www.sse.com.cn/",
-      "timestamp": "2026-08-31T17:18:49+08:00",
+      "timestamp": "2026-08-31T18:16:24+08:00",
       "freshness": "2026-08-31"
     },
     "glass_proxy": {
@@ -120,7 +120,7 @@
       "status": "fresh",
       "source": "weighted proxy basket",
       "source_url": "config/proxy_baskets.json",
-      "timestamp": "2026-08-31T17:18:41+08:00",
+      "timestamp": "2026-08-31T18:15:40+08:00",
       "freshness": "2026-08-31",
       "constituents": [
         {
