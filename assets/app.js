@@ -3,8 +3,9 @@ const $ = (selector) => document.querySelector(selector);
 const all = (selector) => [...document.querySelectorAll(selector)];
 const dateLabel = (value = "") => value.length === 8 ? `${value.slice(0,4)}.${value.slice(4,6)}.${value.slice(6)}` : value;
 const price = (value) => value === null || value === undefined ? "—" : Number(value).toLocaleString("zh-TW", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const lots = (value = 0) => `${Math.abs(Number(value)).toLocaleString("zh-TW", { maximumFractionDigits: 1 })} 張`;
+const lots = (value = 0) => `${Math.abs(Number(value)).toLocaleString("zh-TW", { maximumFractionDigits: 3 })} 張`;
 const money = (value = 0) => {
+  if (value === null || value === undefined) return "—";
   const amount = Math.abs(Number(value));
   if (amount >= 100000000) return `NT$ ${(amount / 100000000).toLocaleString("zh-TW", { maximumFractionDigits: 2 })} 億`;
   if (amount >= 10000) return `NT$ ${(amount / 10000).toLocaleString("zh-TW", { maximumFractionDigits: 1 })} 萬`;
@@ -13,12 +14,14 @@ const money = (value = 0) => {
 const signedClass = (value) => Number(value) >= 0 ? "up" : "down";
 const signedPct = (value) => value === null || value === undefined ? "—" : `${Number(value) > 0 ? "+" : ""}${Number(value).toLocaleString("zh-TW", { maximumFractionDigits: 2 })}%`;
 const currentWindow = () => state.snapshot.flow_windows?.[state.period] || { brokers: [] };
+const matchesSide = (broker) => state.side === "buy" ? Number(broker.net_lots) > 0 : state.side === "sell" ? Number(broker.net_lots) < 0 : Number(broker.net_lots) === 0;
 
 function brokerCard(broker, index, maxLots) {
   const isBuy = Number(broker.net_lots) > 0;
   const open = state.expanded === broker.broker_id;
   const confidence = { high: "高", medium: "中", low: "低" }[broker.confidence] || "低";
   const isCore = state.period === "core";
+  const isDaily = state.period === "1";
   const change = Number(broker.rank_change || 0);
   const rankBadge = !isCore ? "" : broker.rank_status === "new"
     ? `<span class="rank-move new">新進核心</span>`
@@ -35,15 +38,15 @@ function brokerCard(broker, index, maxLots) {
     <span><small>狀態</small><b class="status ${broker.status_code}">${statusIcon} ${broker.status_label}</b></span>
   </div>
   <div class="capital-line"><span>累積淨投入</span><b>${money(broker.cumulative_net_amount)}</b><small>${broker.unrealized_pct == null ? "成本樣本不足" : `現價較成本 ${Number(broker.unrealized_pct) >= 0 ? "+" : ""}${price(broker.unrealized_pct)}%`}</small></div>`;
-  const flowBody = `<div class="broker-title"><b>${broker.broker_name}</b><small>${broker.broker_id}</small><strong class="${isBuy ? "up" : "down"}">${isBuy ? "+" : "−"}${lots(broker.net_lots)}</strong></div>
-    <div class="net-amount ${isBuy ? "up" : "down"}">${isBuy ? "+" : "−"}${money(broker.net_amount)}</div>
+  const flowBody = `<div class="broker-title"><b>${broker.broker_name}</b><small>${broker.broker_id}</small><strong class="${isBuy ? "up" : "down"}">${Number(broker.net_lots) > 0 ? "+" : Number(broker.net_lots) < 0 ? "−" : ""}${lots(broker.net_lots)}</strong></div>
+    <div class="net-amount ${isBuy ? "up" : "down"}">${broker.net_amount == null ? "淨資金 —" : `${Number(broker.net_amount) >= 0 ? "+" : "−"}${money(broker.net_amount)}`}${isDaily ? ` · ${isBuy ? "買進" : "賣出"}均價 ${price(isBuy ? broker.buy_avg_price : broker.sell_avg_price)}` : ""}</div>
     <div class="bar"><i style="width:${Math.abs(broker.net_lots) / maxLots * 100}%"></i></div>
     <div class="row-meta"><span>買進 <b>${lots(broker.buy_lots)}</b> · ${money(broker.buy_amount)}</span><span>賣出 <b>${lots(broker.sell_lots)}</b> · ${money(broker.sell_amount)}</span></div>`;
   return `<button class="broker-card ${open ? "expanded" : ""}" data-broker="${broker.broker_id}">
     <span class="rank">${String(index + 1).padStart(2, "0")}</span>
     <div class="broker-main">
       ${isCore ? `<div class="broker-title core-title"><b>${broker.broker_name}${rankBadge}</b><small>${broker.broker_id}</small></div>${coreBody}` : flowBody}
-      ${open ? `<div class="detail"><span><small>推估成本區間</small><b>${price(broker.inventory_cost_low)}–${price(broker.inventory_cost_high)}</b></span><span><small>成本價位明細</small><b>${broker.cost_detail_records || 0} 筆</b></span><span><small>總資金占比</small><b>${price(broker.capital_share_pct)}%</b></span><span><small>證據可信度</small><b>${confidence}</b></span><span><small>歷史活躍</small><b>${broker.active_sessions}/${broker.history_sessions} 日</b></span><span><small>連續賣超</small><b>${broker.sell_streak || 0} 日</b></span><span><small>庫存留存率</small><b>${price(Number(broker.inventory_retention || 0) * 100)}%</b></span><span><small>股價影響樣本</small><b>${broker.samples || 0} 日</b></span></div>` : ""}
+      ${open && isDaily ? `<div class="detail"><span><small>買進均價</small><b>${price(broker.buy_avg_price)}</b></span><span><small>賣出均價</small><b>${price(broker.sell_avg_price)}</b></span></div>` : open ? `<div class="detail"><span><small>推估成本區間</small><b>${price(broker.inventory_cost_low)}–${price(broker.inventory_cost_high)}</b></span><span><small>成本價位明細</small><b>${broker.cost_detail_records || 0} 筆</b></span><span><small>總資金占比</small><b>${price(broker.capital_share_pct)}%</b></span><span><small>證據可信度</small><b>${confidence}</b></span><span><small>歷史活躍</small><b>${broker.active_sessions}/${broker.history_sessions} 日</b></span><span><small>連續賣超</small><b>${broker.sell_streak || 0} 日</b></span><span><small>庫存留存率</small><b>${price(Number(broker.inventory_retention || 0) * 100)}%</b></span><span><small>股價影響樣本</small><b>${broker.samples || 0} 日</b></span></div>` : ""}
     </div>
   </button>`;
 }
@@ -52,8 +55,9 @@ function renderBrokers() {
   const windowData = currentWindow();
   const allCore = windowData.brokers || [];
   const isCore = state.period === "core";
+  $("#broker-heading").textContent = state.period === "1" ? "全市場當日分點" : "核心觀察分點 20";
   const brokers = (isCore ? [...allCore] : allCore
-    .filter((broker) => state.side === "buy" ? Number(broker.net_lots) > 0 : Number(broker.net_lots) < 0))
+    .filter(matchesSide))
     .sort((left, right) => isCore
       ? Number(right.cumulative_net_amount) - Number(left.cumulative_net_amount)
       : state.side === "buy" ? Number(right.net_lots) - Number(left.net_lots) : Number(left.net_lots) - Number(right.net_lots));
@@ -65,10 +69,13 @@ function renderBrokers() {
     : `${dateLabel(windowData.start_date)}–${dateLabel(windowData.end_date)}`;
   $("#buy-count").textContent = allCore.filter((item) => Number(item.net_lots) > 0).length;
   $("#sell-count").textContent = allCore.filter((item) => Number(item.net_lots) < 0).length;
+  $("#flat-count").textContent = allCore.filter((item) => Number(item.net_lots) === 0).length;
+  $("#flat-tab").classList.toggle("hidden", state.period !== "1");
+  $("#flow-side-tabs").style.gridTemplateColumns = state.period === "1" ? "repeat(3, 1fr)" : "repeat(2, 1fr)";
   $("#flow-side-tabs").classList.toggle("hidden", isCore);
   $("#broker-list").innerHTML = brokers.length
     ? brokers.map((broker, index) => brokerCard(broker, index, maxLots)).join("")
-    : `<div class="empty"><b>這段期間沒有核心主力${state.side === "sell" ? "賣超" : "買超"}</b><p>名單由歷史行為評分選出，不會用當日排行榜替代。</p></div>`;
+    : `<div class="empty"><b>這段期間沒有${state.period === "1" ? "分點" : "核心主力"}${state.side === "sell" ? "賣超" : "買超"}</b><p>${state.period === "1" ? "每日榜涵蓋全市場有交易的分點。" : "此期間追蹤歷史核心 20 分點。"}</p></div>`;
   all(".broker-card").forEach((button) => button.addEventListener("click", () => {
     state.expanded = state.expanded === button.dataset.broker ? null : button.dataset.broker;
     renderBrokers();
@@ -98,9 +105,9 @@ function render(data) {
   $("#signal-copy").textContent = data.impact_ranking.length ? "歷史核心分點與市場方向的綜合判讀。" : "歷史樣本不足，目前只列候選分點，不判定控制關係。";
   $("#gauge").style.setProperty("--score", `${data.signal.score * 3.6}deg`);
   $("#volume").textContent = `${Number(market.volume_lots || 0).toLocaleString()} 張`;
-  $("#concentration").textContent = `${Number(market.concentration_lots || 0).toLocaleString()} 張`;
+  $("#concentration").textContent = market.concentration_lots == null ? "—" : `${Number(market.concentration_lots).toLocaleString()} 張`;
   $("#concentration").className = signedClass(market.concentration_lots);
-  $("#concentration-pct").textContent = `${price(market.concentration_pct)}%`;
+  $("#concentration-pct").textContent = market.concentration_pct == null ? "資料未提供" : `${price(market.concentration_pct)}%`;
   $("#method-note").textContent = `${data.method_note} 本頁僅供研究，不構成投資建議。`;
   renderBrokers();
   renderImpact();
@@ -171,11 +178,12 @@ function renderCatalyst(data) {
 
 function updateVisibleNet() {
   const rows = currentWindow().brokers || [];
-  const visible = state.period === "core" ? rows : rows.filter((item) => state.side === "buy" ? Number(item.net_lots) > 0 : Number(item.net_lots) < 0);
+  const visible = state.period === "core" ? rows : rows.filter(matchesSide);
   const net = visible.reduce((sum, item) => sum + Number(item.net_lots), 0);
   $("#visible-net-label").textContent = state.period === "core"
-    ? "核心累積淨額" : state.side === "buy" ? "核心期間買超" : "核心期間賣超";
+    ? "核心累積淨額" : state.period === "1" ? `全市場當日${state.side === "buy" ? "買超" : "賣超"}` : state.side === "buy" ? "核心期間買超" : "核心期間賣超";
   $("#visible-net").textContent = `${net > 0 ? "+" : ""}${net.toLocaleString()} 張`;
+  if (state.period === "1" && state.side === "flat") $("#visible-net-label").textContent = "全市場當日買賣相抵";
   $("#visible-net").className = signedClass(net);
 }
 
@@ -188,6 +196,8 @@ all("[data-side]").forEach((button) => button.addEventListener("click", () => {
 
 all("[data-period]").forEach((button) => button.addEventListener("click", () => {
   state.period = button.dataset.period; state.expanded = null;
+  if (state.side === "flat" && state.period !== "1") state.side = "buy";
+  all("[data-side]").forEach((item) => item.className = item.dataset.side === state.side ? (state.side === "buy" ? "active-buy" : "active-sell") : "");
   all("[data-period]").forEach((item) => item.className = item === button ? "active" : "");
   renderBrokers(); updateVisibleNet();
 }));

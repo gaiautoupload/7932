@@ -1,5 +1,7 @@
 # 7932 昱鐳應材主力雷達
 
+每日分點榜已於 2026-10-08 改為全市場當日有交易的全部分點；核心與多日追蹤保留原有策略範圍。維護規則見 [DAILY_RANKING.md](DAILY_RANKING.md)。
+
 純 HTML/CSS/JavaScript 靜態網站，可直接部署到 GitHub Pages，沒有伺服器與資料庫依賴。
 
 ## 發布
