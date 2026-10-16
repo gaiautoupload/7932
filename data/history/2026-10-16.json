@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-16",
+  "updated_at": "2026-10-16T18:17:05+08:00",
+  "7932": {
+    "weighted_avg_price": 392.44,
+    "change_pct": 1.361159180721642,
+    "source": "TPEx EMdes010",
+    "status": "fresh",
+    "freshness": "20261016",
+    "core_inventory_lots": 1912.85,
+    "core_inventory_change_pct": -0.17,
+    "inventory_not_declining": true
+  },
+  "signals": {
+    "main_force": 100.0,
+    "external_catalyst": 50.3,
+    "ignition": 77.6
+  },
+  "components": {
+    "emc_2383": {
+      "key": "emc_2383",
+      "code": "2383",
+      "name": "台光電 Direct Signal",
+      "symbol": "2383.TW",
+      "date": "2026-10-16",
+      "price": 5165.0,
+      "change_pct": 0.879,
+      "return_5d_pct": -13.917,
+      "trend_20d_pct": 0.978,
+      "volume": 2761868,
+      "volume_ratio_20d": 1.103,
+      "breakout_20d": false,
+      "momentum_z": 0.188,
+      "daily_score": 53.8,
+      "five_day_score": 23.3,
+      "volume_score": 60,
+      "score": 48.2,
+      "source": "Yahoo Finance fallback",
+      "source_url": "https://finance.yahoo.com/quote/2383.TW",
+      "timestamp": "2026-10-16T18:15:59+08:00",
+      "freshness": "2026-10-16",
+      "status": "fresh",
+      "official_validated": false
+    },
+    "m8m9_proxy": {
+      "name": "M8/M9 Proxy Index",
+      "change_pct": -0.469,
+      "return_5d_pct": -8.983,
+      "trend_20d_pct": 10.276,
+      "score": 42.8,
+      "up_count": 1,
+      "total_count": 4,
+      "all_up": false,
+      "alerts": [],
+      "missing_weight": 0.0,
+      "confidence": "HIGH",
+      "status": "fresh",
+      "source": "weighted proxy basket",
+      "source_url": "config/proxy_baskets.json",
+      "timestamp": "2026-10-16T18:16:00+08:00",
+      "freshness": "2026-10-16",
+      "constituents": [
+        {
+          "key": "taiwan_union_6274",
+          "weight": 0.35,
+          "change_pct": -0.615,
+          "score": 45.8,
+          "status": "fresh"
+        },
+        {
+          "key": "iteq_6213",
+          "weight": 0.25,
+          "change_pct": -3.129,
+          "score": 37.8,
+          "status": "fresh"
+        },
+        {
+          "key": "shengyi_600183",
+          "weight": 0.25,
+          "change_pct": -0.009,
+          "score": 40.7,
+          "status": "fresh"
+        },
+        {
+          "key": "doosan_000150",
+          "weight": 0.15,
+          "change_pct": 3.539,
+          "score": 47.4,
+          "status": "fresh"
+        }
+      ]
+    },
+    "ppo_mppo": {
+      "name": "PPO/MPPO Proxy / Event Signal",
+      "score": 40.2,
+      "proxy_change_pct": -1.386,
+      "proxy_score": 36.0,
+      "event_score": 50.0,
+      "actual_price_event": null,
+      "active_events": [],
+      "status": "partial",
+      "confidence": "MEDIUM",
+      "source": "聖泉集團行情 + SSE 官方公告",
+      "source_url": "https://www.sse.com.cn/",
+      "timestamp": "2026-10-16T18:17:05+08:00",
+      "freshness": "2026-10-16"
+    },
+    "glass_proxy": {
+      "name": "玻纖 / Low-Dk Material Sentiment",
+      "change_pct": 8.252,
+      "return_5d_pct": 4.2,
+      "trend_20d_pct": 20.867,
+      "score": 83.8,
+      "up_count": 2,
+      "total_count": 2,
+      "all_up": true,
+      "alerts": [
+        "STRONG_CCL"
+      ],
+      "missing_weight": 0.0,
+      "confidence": "HIGH",
+      "status": "fresh",
+      "source": "weighted proxy basket",
+      "source_url": "config/proxy_baskets.json",
+      "timestamp": "2026-10-16T18:16:01+08:00",
+      "freshness": "2026-10-16",
+      "constituents": [
+        {
+          "key": "fulltech_1815",
+          "weight": 0.5,
+          "change_pct": 9.804,
+          "score": 88.3,
+          "status": "fresh"
+        },
+        {
+          "key": "taiwan_glass_1802",
+          "weight": 0.5,
+          "change_pct": 6.699,
+          "score": 79.3,
+          "status": "fresh"
+        }
+      ]
+    }
+  },
+  "signal": "BULLISH",
+  "signal_label": "🟢 偏多",
+  "alerts": [],
+  "quality": {
+    "status": "ok",
+    "errors": [],
+    "stock_count": 8,
+    "expected_stock_count": 8
+  }
+}
