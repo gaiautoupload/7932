@@ -1,0 +1,162 @@
+{
+  "date": "2026-11-11",
+  "updated_at": "2026-11-11T18:16:03+08:00",
+  "7932": {
+    "weighted_avg_price": 201.42,
+    "change_pct": -5.746373420683202,
+    "source": "TPEx EMdes010",
+    "status": "fresh",
+    "freshness": "20261111",
+    "core_inventory_lots": 1818.16,
+    "core_inventory_change_pct": 0.7,
+    "inventory_not_declining": true
+  },
+  "signals": {
+    "main_force": 100.0,
+    "external_catalyst": 63.8,
+    "ignition": 83.7
+  },
+  "components": {
+    "emc_2383": {
+      "key": "emc_2383",
+      "code": "2383",
+      "name": "台光電 Direct Signal",
+      "symbol": "2383.TW",
+      "date": "2026-11-11",
+      "price": 4500.0,
+      "change_pct": 3.093,
+      "return_5d_pct": -1.207,
+      "trend_20d_pct": -18.846,
+      "volume": 3929882,
+      "volume_ratio_20d": 1.106,
+      "breakout_20d": false,
+      "momentum_z": 0.583,
+      "daily_score": 61.7,
+      "five_day_score": 48.0,
+      "volume_score": 60,
+      "score": 57.5,
+      "source": "Yahoo Finance fallback",
+      "source_url": "https://finance.yahoo.com/quote/2383.TW",
+      "timestamp": "2026-11-11T18:15:53+08:00",
+      "freshness": "2026-11-11",
+      "status": "fresh",
+      "official_validated": false
+    },
+    "m8m9_proxy": {
+      "name": "M8/M9 Proxy Index",
+      "change_pct": 8.566,
+      "return_5d_pct": -7.422,
+      "trend_20d_pct": -34.257,
+      "score": 66.2,
+      "up_count": 4,
+      "total_count": 4,
+      "all_up": true,
+      "alerts": [
+        "BROAD_UP",
+        "FULL_RESONANCE",
+        "STRONG_CCL"
+      ],
+      "missing_weight": 0.0,
+      "confidence": "HIGH",
+      "status": "fresh",
+      "source": "weighted proxy basket",
+      "source_url": "config/proxy_baskets.json",
+      "timestamp": "2026-11-11T18:15:54+08:00",
+      "freshness": "2026-11-11",
+      "constituents": [
+        {
+          "key": "taiwan_union_6274",
+          "weight": 0.35,
+          "change_pct": 7.943,
+          "score": 66.5,
+          "status": "fresh"
+        },
+        {
+          "key": "iteq_6213",
+          "weight": 0.25,
+          "change_pct": 9.848,
+          "score": 65.4,
+          "status": "fresh"
+        },
+        {
+          "key": "shengyi_600183",
+          "weight": 0.25,
+          "change_pct": 8.389,
+          "score": 70.8,
+          "status": "fresh"
+        },
+        {
+          "key": "doosan_000150",
+          "weight": 0.15,
+          "change_pct": 8.176,
+          "score": 59.0,
+          "status": "fresh"
+        }
+      ]
+    },
+    "ppo_mppo": {
+      "name": "PPO/MPPO Proxy / Event Signal",
+      "score": 61.7,
+      "proxy_change_pct": 3.676,
+      "proxy_score": 66.7,
+      "event_score": 50.0,
+      "actual_price_event": null,
+      "active_events": [],
+      "status": "fresh",
+      "confidence": "HIGH",
+      "source": "聖泉集團行情 + SSE 官方公告",
+      "source_url": "https://www.sse.com.cn/",
+      "timestamp": "2026-11-11T18:16:03+08:00",
+      "freshness": "2026-11-11"
+    },
+    "glass_proxy": {
+      "name": "玻纖 / Low-Dk Material Sentiment",
+      "change_pct": 9.825,
+      "return_5d_pct": 9.534,
+      "trend_20d_pct": 16.093,
+      "score": 76.2,
+      "up_count": 2,
+      "total_count": 2,
+      "all_up": true,
+      "alerts": [
+        "STRONG_CCL"
+      ],
+      "missing_weight": 0.0,
+      "confidence": "HIGH",
+      "status": "fresh",
+      "source": "weighted proxy basket",
+      "source_url": "config/proxy_baskets.json",
+      "timestamp": "2026-11-11T18:15:54+08:00",
+      "freshness": "2026-11-11",
+      "constituents": [
+        {
+          "key": "fulltech_1815",
+          "weight": 0.5,
+          "change_pct": 9.766,
+          "score": 70.5,
+          "status": "fresh"
+        },
+        {
+          "key": "taiwan_glass_1802",
+          "weight": 0.5,
+          "change_pct": 9.885,
+          "score": 81.8,
+          "status": "fresh"
+        }
+      ]
+    }
+  },
+  "signal": "BULLISH",
+  "signal_label": "🟢 偏多",
+  "alerts": [
+    "BROAD_UP",
+    "FULL_RESONANCE",
+    "STRONG_CCL"
+  ],
+  "quality": {
+    "status": "ok",
+    "errors": [],
+    "stock_count": 8,
+    "expected_stock_count": 8
+  }
+}
