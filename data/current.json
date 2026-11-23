@@ -1,20 +1,20 @@
 {
-  "date": "2026-11-20",
-  "updated_at": "2026-11-21T20:47:08+08:00",
+  "date": "2026-11-23",
+  "updated_at": "2026-11-23T18:17:02+08:00",
   "7932": {
-    "weighted_avg_price": 127.38,
-    "change_pct": -12.278768679842994,
+    "weighted_avg_price": 133.98,
+    "change_pct": 5.181347150259063,
     "source": "TPEx EMdes010",
     "status": "fresh",
-    "freshness": "20261120",
-    "core_inventory_lots": 1932.31,
-    "core_inventory_change_pct": 2.26,
+    "freshness": "20261123",
+    "core_inventory_lots": 1960.27,
+    "core_inventory_change_pct": 1.45,
     "inventory_not_declining": true
   },
   "signals": {
-    "main_force": 100.0,
-    "external_catalyst": 23.1,
-    "ignition": 65.4
+    "main_force": 56.0,
+    "external_catalyst": 63.9,
+    "ignition": 59.6
   },
   "components": {
     "emc_2383": {
@@ -22,81 +22,83 @@
       "code": "2383",
       "name": "台光電 Direct Signal",
       "symbol": "2383.TW",
-      "date": "2026-11-20",
-      "price": 2810.0,
-      "change_pct": -9.936,
-      "return_5d_pct": -33.333,
-      "trend_20d_pct": -44.576,
-      "volume": 3327855,
-      "volume_ratio_20d": 0.83,
+      "date": "2026-11-23",
+      "price": 3090.0,
+      "change_pct": 9.964,
+      "return_5d_pct": -18.577,
+      "trend_20d_pct": -39.053,
+      "volume": 8679208,
+      "volume_ratio_20d": 2.198,
       "breakout_20d": false,
-      "momentum_z": -1.674,
-      "daily_score": 16.5,
-      "five_day_score": 0,
-      "volume_score": 45,
-      "score": 20.8,
-      "source": "TWSE OpenAPI + Yahoo history",
-      "source_url": "https://openapi.twse.com.tw/",
-      "timestamp": "2026-11-21T20:45:58+08:00",
-      "freshness": "2026-11-20",
+      "momentum_z": 1.631,
+      "daily_score": 82.6,
+      "five_day_score": 22.8,
+      "volume_score": 90,
+      "score": 68.5,
+      "source": "Yahoo Finance fallback",
+      "source_url": "https://finance.yahoo.com/quote/2383.TW",
+      "timestamp": "2026-11-23T18:15:57+08:00",
+      "freshness": "2026-11-23",
       "status": "fresh",
-      "official_validated": true
+      "official_validated": false
     },
     "m8m9_proxy": {
       "name": "M8/M9 Proxy Index",
-      "change_pct": -8.869,
-      "return_5d_pct": -26.567,
-      "trend_20d_pct": -51.837,
-      "score": 23.0,
-      "up_count": 0,
+      "change_pct": 7.397,
+      "return_5d_pct": -13.547,
+      "trend_20d_pct": -46.381,
+      "score": 61.7,
+      "up_count": 4,
       "total_count": 4,
-      "all_up": false,
+      "all_up": true,
       "alerts": [
-        "WEAK_CCL"
+        "BROAD_UP",
+        "FULL_RESONANCE",
+        "STRONG_CCL"
       ],
       "missing_weight": 0.0,
       "confidence": "HIGH",
       "status": "fresh",
       "source": "weighted proxy basket",
       "source_url": "config/proxy_baskets.json",
-      "timestamp": "2026-11-21T20:45:59+08:00",
-      "freshness": "2026-11-20",
+      "timestamp": "2026-11-23T18:15:58+08:00",
+      "freshness": "2026-11-23",
       "constituents": [
         {
           "key": "taiwan_union_6274",
           "weight": 0.35,
-          "change_pct": -9.971,
-          "score": 16.8,
+          "change_pct": 9.952,
+          "score": 64.1,
           "status": "fresh"
         },
         {
           "key": "iteq_6213",
           "weight": 0.25,
-          "change_pct": -10.0,
-          "score": 16.3,
+          "change_pct": 9.986,
+          "score": 65.8,
           "status": "fresh"
         },
         {
           "key": "shengyi_600183",
           "weight": 0.25,
-          "change_pct": -3.185,
-          "score": 37.9,
+          "change_pct": 4.077,
+          "score": 59.1,
           "status": "fresh"
         },
         {
           "key": "doosan_000150",
           "weight": 0.15,
-          "change_pct": -13.889,
-          "score": 23.8,
+          "change_pct": 2.657,
+          "score": 53.7,
           "status": "fresh"
         }
       ]
     },
     "ppo_mppo": {
       "name": "PPO/MPPO Proxy / Event Signal",
-      "score": 30.5,
-      "proxy_change_pct": -5.963,
-      "proxy_score": 22.1,
+      "score": 66.2,
+      "proxy_change_pct": 6.016,
+      "proxy_score": 73.2,
       "event_score": 50.0,
       "actual_price_event": null,
       "active_events": [],
@@ -104,50 +106,52 @@
       "confidence": "MEDIUM",
       "source": "聖泉集團行情 + SSE 官方公告",
       "source_url": "https://www.sse.com.cn/",
-      "timestamp": "2026-11-21T20:47:08+08:00",
-      "freshness": "2026-11-20"
+      "timestamp": "2026-11-23T18:17:02+08:00",
+      "freshness": "2026-11-23"
     },
     "glass_proxy": {
       "name": "玻纖 / Low-Dk Material Sentiment",
-      "change_pct": -9.941,
-      "return_5d_pct": -34.06,
-      "trend_20d_pct": -24.97,
-      "score": 18.8,
-      "up_count": 0,
+      "change_pct": 6.683,
+      "return_5d_pct": -22.953,
+      "trend_20d_pct": -19.836,
+      "score": 54.5,
+      "up_count": 2,
       "total_count": 2,
-      "all_up": false,
+      "all_up": true,
       "alerts": [
-        "WEAK_CCL"
+        "STRONG_CCL"
       ],
       "missing_weight": 0.0,
       "confidence": "HIGH",
       "status": "fresh",
       "source": "weighted proxy basket",
       "source_url": "config/proxy_baskets.json",
-      "timestamp": "2026-11-21T20:46:00+08:00",
-      "freshness": "2026-11-20",
+      "timestamp": "2026-11-23T18:15:59+08:00",
+      "freshness": "2026-11-23",
       "constituents": [
         {
           "key": "fulltech_1815",
           "weight": 0.5,
-          "change_pct": -10.0,
-          "score": 20.4,
+          "change_pct": 3.535,
+          "score": 48.4,
           "status": "fresh"
         },
         {
           "key": "taiwan_glass_1802",
           "weight": 0.5,
-          "change_pct": -9.881,
-          "score": 17.1,
+          "change_pct": 9.83,
+          "score": 60.5,
           "status": "fresh"
         }
       ]
     }
   },
-  "signal": "CONTROLLED_MOVE",
-  "signal_label": "⚠️ 孤立拉抬",
+  "signal": "BULLISH",
+  "signal_label": "🟢 偏多",
   "alerts": [
-    "WEAK_CCL"
+    "BROAD_UP",
+    "FULL_RESONANCE",
+    "STRONG_CCL"
   ],
   "quality": {
     "status": "ok",
